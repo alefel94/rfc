@@ -1,0 +1,89 @@
+<!-- <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualización de RFC</title>
+</head>
+<body>
+    <h1>Actualizar RFC</h1>
+    <form method="POST" action="procesar.php">
+        <label for="rfcViejo">RFC Viejo:</label>
+        <input type="text" id="rfcViejo" name="rfcViejo" required>
+        <br>
+        <label for="rfcNuevo">RFC Nuevo:</label>
+        <input type="text" id="rfcNuevo" name="rfcNuevo" required>
+        <br><br>
+        <button type="submit">Generar Consultas</button>
+    </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualización de RFC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Actualizar RFC</h1> 
+    <br>
+    <form id="rfcForm">
+        <label for="rfcViejo">RFC Viejo:</label>
+        <input type="text" id="rfcViejo" name="rfcViejo" required>
+        <br>
+        <label for="rfcNuevo">RFC Nuevo:</label>
+        <input type="text" id="rfcNuevo" name="rfcNuevo" required>
+        <br><br>
+        <button type="submit">Generar Consultas</button>
+    </form>
+
+    <div id="resultados"></div> <!-- Div para mostrar los resultados -->
+
+    <script>
+        document.getElementById('rfcForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevenir la recarga de la página
+
+            // Obtener los valores del formulario
+            const rfcViejo = document.getElementById('rfcViejo').value;
+            const rfcNuevo = document.getElementById('rfcNuevo').value;
+
+            // Validar los campos
+            if (!rfcViejo || !rfcNuevo) {
+                alert('Por favor, ingrese el RFC viejo y el RFC nuevo.');
+                return;
+            }
+
+            // Enviar los datos a procesar.php usando fetch
+            try {
+                const response = await fetch('procesar.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        rfcViejo: rfcViejo,
+                        rfcNuevo: rfcNuevo
+                    })
+                });
+
+                // Obtener el contenido devuelto por procesar.php
+                const result = await response.text();
+
+                // Mostrar los resultados en el div "resultados"
+                document.getElementById('resultados').innerHTML = result;
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultados').innerHTML = "<p>Error al procesar la solicitud.</p>";
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
